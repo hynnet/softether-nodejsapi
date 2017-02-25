@@ -2,7 +2,7 @@
 const VPNSERVER = "";
 const VNPPORT = "";
 const PASSWORD = "";
-const CONNECTION = "/usr/local/vpnclient/./vpncmd /server " +  SERVER + ":" + VPNPORT + " /password:" + PASSWORD + " /adminhub:";
+const CONNECTION = "/usr/local/vpnclient/./vpncmd /server " +  VPNSERVER + ":" + VPNPORT + " /password:" + PASSWORD + " /adminhub:";
 const VNCPATH = "../novnc/utils/./launch.sh"
 var exec =  require("child_process").execSync; 
 var vnc;
