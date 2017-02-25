@@ -1,10 +1,9 @@
 /*global require module*/
 const SERVER = 
-const PORT = 
+const VNPPORT = 
 const PASSWORD = 
-const CONNECTION = "/usr/local/vpnclient/./vpncmd /server " +  SERVER + ":" + PORT + " /password:" + PASSWORD + " /adminhub:";
+const CONNECTION = "/usr/local/vpnclient/./vpncmd /server " +  SERVER + ":" + VPNPORT + " /password:" + PASSWORD + " /adminhub:";
 const VNCPATH = "../webpage/novnc/utils/./launch.sh"
-//const CONNECTION = "/usr/local/vpnserver/./vpncmd /server localhost:443 /password:Pal23174 /adminhub:";
 var exec =  require("child_process").execSync; 
 var vnc;
 //********************************************************************************
