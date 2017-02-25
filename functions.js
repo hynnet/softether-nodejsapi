@@ -1,11 +1,17 @@
 /*global require module*/
-const CONNECTION = "/usr/local/vpnclient/./vpncmd /server <SERVERIP>:443 /password:<ADMINPASSWORD> /adminhub:";
+const SERVER = 
+const PORT = 
+const PASSWORD = 
+const CONNECTION = "/usr/local/vpnclient/./vpncmd /server " +  SERVER + ":" + PORT + " /password:" + PASSWORD + " /adminhub:";
+const VNCPATH = "../webpage/novnc/utils/./launch.sh"
+//const CONNECTION = "/usr/local/vpnserver/./vpncmd /server localhost:443 /password:Pal23174 /adminhub:";
 var exec =  require("child_process").execSync; 
-
+var vnc;
 //********************************************************************************
 module.exports = {
 
   sessionList: function(hub) {
+
     var info = [];
     var sessions = [];
     var temp = [];
@@ -18,9 +24,10 @@ module.exports = {
       
       temp[0] = temp[4];
       if (temp[3] !== "SecureNAT Session" && temp[0] !== "L3SW_ro") { // Don't include stystem connections
-        temp.splice(4,1); //Remove duplicated username in [4]
+        temp.splice(4,1); //Remove duplicated username in [4]      
         sessions.push(temp);
       }
+
       temp = [];
       i=i+j;
     }
@@ -31,6 +38,7 @@ module.exports = {
     var info = [];
     var sessions = [];
     var temp = [];
+    const htmlPlayIcon = "<i class='material-icons'> &nbsp; play_circle_outline</i>";
     info = exec(CONNECTION + hub + " /cmd IpTable").toString().split("\n");   
     info = info.splice(14);
     for (i = 0 ; i < info.length-9;) {
@@ -41,6 +49,7 @@ module.exports = {
       temp[0] = temp[2].split("-")[1].toLowerCase(); // Build user name
       temp[6] = temp[6].replace("On ","");
       sessions.push(temp); 
+      temp.push(htmlPlayIcon);
       temp = [];
       i=i+j;      
     }
@@ -63,7 +72,8 @@ module.exports = {
 
 
   getAllUsers(hub) {
-    
+   
+    var oneUser = []; 
     var users = [];
     var temp = [];
     var info = exec(CONNECTION + hub + " /cmd UserList").toString().split("\n");
@@ -72,11 +82,14 @@ module.exports = {
 
     for (var i = 0 ; i < info.length-9;) {
       for (var j = 0 ; j < 11; j++) {
-        temp.push(info[i+j].substring(17));  // Remove field description     
+        temp.push(info[i+j].substring(17));  // Remove field description    
       }
-      temp.shift(); 
-      users.push(temp);
+      temp.shift();
+      oneUser.push(temp[0]);
+      oneUser.push(temp[1]);        
+      users.push(oneUser);
       temp = [];
+      oneUser = [];
       i=i+j;  
     }
     return JSON.stringify(users);
@@ -115,5 +128,15 @@ module.exports = {
   generatePass: function() { 
     var password = Math.random().toString(36).slice(-8);
     return password;
+  },
+
+  vncConnect: function(ip) {    
+    const spawn = require('child_process').spawn;
+    if(vnc != undefined) {
+      vnc.kill();
+    }
+    vnc = require("child_process").spawn(VNCPATH,["--vnc", ip + ":5900"]);   
+    console.log(ip + " Connected");
+    
   }
 };
