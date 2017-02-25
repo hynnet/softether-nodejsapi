@@ -1,6 +1,6 @@
 /*global require module*/
 const VPNSERVER = "";
-const VNPPORT = "";
+const VPNPORT = "";
 const PASSWORD = "";
 const CONNECTION = "/usr/local/vpnclient/./vpncmd /server " +  VPNSERVER + ":" + VPNPORT + " /password:" + PASSWORD + " /adminhub:";
 const VNCPATH = "../novnc/utils/./launch.sh"
