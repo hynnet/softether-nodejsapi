@@ -25,6 +25,7 @@ app.use(function (req, res, next) {
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(3001); 
+console.log("Listening...");
 
 //*********************************
 
@@ -61,7 +62,7 @@ app.get("/sessions.json", function (req,res) { //lista
 app.get("/allUsers.json", function (req,res) { //lista
   if (!req.body) return res.sendStatus(400);
   //if (req.headers.token !== token) return res.sendStatus(401);
-  onsole.log("Getting all users...");
+  console.log("Getting all users...");
   hub = req.query.hubname;
   if(hubList.indexOf(hub) > -1) {
     var users = tools.getAllUsers(hub);
